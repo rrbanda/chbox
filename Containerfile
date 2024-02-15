@@ -1,9 +1,9 @@
 FROM quay.io/centos-bootc/fedora-bootc:eln
 
 # Chris containers
-COPY workloads/chbox/quadlet/chatbot.kube.example /etc/containers/systemd/chatbot.kube
-COPY workloads/chbox/quadlet/chatbot.yaml /etc/containers/systemd/chatbot.yaml
-COPY workloads/chbox/quadlet/chatbot.image /etc/containers/systemd/chatbot.image
+COPY workloads/chbox.kube/etc/containers/systemd/chbox.kube
+COPY workloads/chbox.yaml /etc/containers/systemd/chbox.yaml
+COPY workloads/chbox.image /etc/containers/systemd/chbox.image
 
 RUN echo "root:secure" | chpasswd
 COPY wheel-passwordless-sudo /etc/sudoers.d/wheel-passwordless-sudo
