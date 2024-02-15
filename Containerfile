@@ -9,7 +9,7 @@ COPY workloads/chbox.kube/etc/containers/systemd/chbox.kube
 # This line copies a file named chatbot.yaml from the host into the container, specifically into the path /etc/containers/systemd/chbox.yaml.
 COPY workloads/chbox.yaml /etc/containers/systemd/chbox.yaml
 
-#  This line copies a file named chbox.image from the host into the container, specifically into the path /etc/containers/systemd/chbox.image.
+# This line copies a file named chbox.image from the host into the container, specifically into the path /etc/containers/systemd/chbox.image.
 COPY workloads/chbox.image /etc/containers/systemd/chbox.image
 
 # This line runs a command inside the container. 
