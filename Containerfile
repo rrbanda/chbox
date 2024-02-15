@@ -8,7 +8,7 @@ COPY workloads/chbox.image /etc/containers/systemd/chbox.image
 RUN echo "root:secure" | chpasswd
 COPY wheel-passwordless-sudo /etc/sudoers.d/wheel-passwordless-sudo
 
-RUN podman pull --root=/usr/lib/containers/storage quay.io/sallyom/chatbot:inference
+RUN podman pull --root=/usr/lib/containers/storage quay.io/rbrhssa/chbox
 RUN dnf install -y vim && dnf clean all
 RUN mkdir /usr/etc-system && \
     echo 'AuthorizedKeysFile /usr/etc-system/%u.keys' >> /etc/ssh/sshd_config.d/30-auth-system.conf && \
