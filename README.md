@@ -1,6 +1,8 @@
-# chbox
+# ChBox
 
-To build image run below commands
+### Customize the chbox image
+
+To build a custom chbox image derived from quay.io/centos-bootc/centos-bootc:stream9, use the Containerfile in this repo, then run
 
 ` podman build -t quay.io/your-repo/your-os:tag . `
 
