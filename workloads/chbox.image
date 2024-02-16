@@ -1,7 +1,8 @@
 [Install]
-WantedBy=chatbot.service
+WantedBy=chbox.service
 
 [Image]
-Image=quay.io/sallyom/models:mistral-7b-gguf
-Image=quay.io/sallyom/model-service:llamacpp
-Image=quay.io/sallyom/chatbot:langchain-streamlit
+Image=ghcr.io/fnndsc/cube:5.0.0
+Image=ghcr.io/fnndsc/chris_ui:20231003.270-01f1a863
+Image=ghcr.io/fnndsc/pfcon:5.2.2
+Image=ghcr.io/fnndsc/pman:6.0.1
