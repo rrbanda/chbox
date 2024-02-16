@@ -1,5 +1,5 @@
 [Unit]
-Description=Python script to run against downloaded LLM
+Description=Chris Application
 Documentation=man:podman-generate-systemd(1)
 Wants=network-online.target
 After=network-online.target
