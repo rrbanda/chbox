@@ -4,7 +4,7 @@ FROM quay.io/centos-bootc/centos-bootc:stream9
 
 # Copies a file named chbox.kube from the host into the container, 
 # specifically into the path /etc/containers/systemd/chbox.kube.
-COPY workloads/chbox.kube/etc/containers/systemd/chbox.kube
+COPY workloads/chbox.kube /etc/containers/systemd/chbox.kube
 
 # Copies a file named chatbot.yaml from the host into the container, specifically into the path /etc/containers/systemd/chbox.yaml.
 COPY workloads/chbox.yaml /etc/containers/systemd/chbox.yaml
