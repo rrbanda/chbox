@@ -13,7 +13,7 @@ COPY workloads/chbox.yaml /etc/containers/systemd/chbox.yaml
 COPY workloads/chbox.image /etc/containers/systemd/chbox.image
 
 # Runs two commands inside the container. First, it installs the vim package using dnf (the package manager for Fedora-based systems), then it cleans up any cached package data.
-RUN dnf install -y vim-enhance && dnf clean all
+RUN dnf install -y vim && dnf clean all
 
 # Creates a directory /usr/etc-system and then echoes the SSH configuration into a file 30-auth-system.conf. It also adds an SSH public key into another file root.keys.
 RUN mkdir /usr/etc-system && \
