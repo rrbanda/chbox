@@ -1,6 +1,6 @@
 # Specifies the base image that this container will be built upon.
 # It's pulling from the image quay.io/centos-bootc/fedora-bootc:eln with the tag eln.
-FROM quay.io/centos-bootc/fedora-bootc:eln
+FROM quay.io/centos-bootc/centos-bootc:stream9
 
 # Copies a file named chbox.kube from the host into the container, 
 # specifically into the path /etc/containers/systemd/chbox.kube.
