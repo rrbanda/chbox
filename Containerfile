@@ -14,11 +14,11 @@ COPY workloads/chbox.image /etc/containers/systemd/chbox.image
 
 # Runs a command inside the container. 
 # It's using echo to create a string (root:secure) and then piping it to chpasswd, which updates the password for the root user.
-RUN echo "root:secure" | chpasswd
+# RUN echo "root:secure" | chpasswd
 
 # Copies a file named wheel-passwordless-sudo from the host into the container, specifically into the path /etc/sudoers.d/wheel-passwordless-sudo. 
 # This file is likely configuring sudo to allow members of the wheel group to execute commands without a password.
-COPY wheel-passwordless-sudo /etc/sudoers.d/wheel-passwordless-sudo
+# COPY wheel-passwordless-sudo /etc/sudoers.d/wheel-passwordless-sudo
 
 # Runs two commands inside the container. First, it installs the vim package using dnf (the package manager for Fedora-based systems), then it cleans up any cached package data.
 RUN dnf install -y vim && dnf clean all
