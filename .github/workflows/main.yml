@@ -1,4 +1,4 @@
-name: Build and push bootc image for ChRIS application
+name: Build and Push Podman Image
 
 on:
   push:
@@ -14,21 +14,6 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-      
-    - name: Extract latest repository tag
-      id: extract_tag
-      run: |
-        latest_tag=$(git describe --abbrev=0 --tags)
-        echo "::set-output name=latest_tag::$latest_tag"
-
-    - name: Increment tag
-      id: increment_tag
-      run: |
-        latest_tag="${{ steps.extract_tag.outputs.latest_tag }}"
-        IFS='.' read -r major minor <<< "$latest_tag"
-        incremented_minor=$((minor + 1))
-        new_tag="$major.$incremented_minor"
-        echo "::set-output name=new_tag::$new_tag"
 
     - name: Install Podman
       run: |
@@ -42,8 +27,11 @@ jobs:
         QUAY_URL: ${{ secrets.QUAY_URL }}
         QUAY_REPOSITORY: ${{ secrets.QUAY_REPOSITORY }}
       run: |
-        new_tag="${{ steps.increment_tag.outputs.new_tag }}"
-        IMAGE_NAME=$QUAY_URL/$QUAY_REPOSITORY/chbox:$new_tag
+        COMMIT_HASH=$(git rev-parse --short HEAD)
+        TAG=$(echo $GITHUB_REF | sed 's|.*/||')
+        IMAGE_NAME=$QUAY_URL/$QUAY_REPOSITORY/chbox:$TAG
         podman build -t $IMAGE_NAME .
         podman login -u $QUAY_USERNAME -p $QUAY_PASSWORD $QUAY_URL
+        podman tag $IMAGE_NAME $QUAY_URL/$QUAY_REPOSITORY/chbox:$COMMIT_HASH
         podman push $IMAGE_NAME
+        podman push $QUAY_URL/$QUAY_REPOSITORY/chbox:$COMMIT_HASH
