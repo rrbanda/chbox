@@ -1,5 +1,4 @@
-name: Build and Push Podman Image
-
+name: Create bootc image for ChRIS 
 on:
   push:
     branches:
@@ -22,8 +21,8 @@ jobs:
 
     - name: Build and push Podman image
       env:
-        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        QUAY_USERNAME: ${{ secrets.QUAY_USERNAME }}
+        QUAY_PASSWORD: ${{ secrets.QUAY_PASSWORD }}
         QUAY_URL: ${{ secrets.QUAY_URL }}
         QUAY_REPOSITORY: ${{ secrets.QUAY_REPOSITORY }}
       run: |
@@ -31,7 +30,7 @@ jobs:
         TAG=$(echo $GITHUB_REF | sed 's|.*/||')
         IMAGE_NAME=$QUAY_URL/$QUAY_REPOSITORY/chbox:$TAG
         podman build -t $IMAGE_NAME .
-        podman login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD $QUAY_URL
+        podman login -u $QUAY_USERNAME -p $QUAY_PASSWORD $QUAY_URL
         podman tag $IMAGE_NAME $QUAY_URL/$QUAY_REPOSITORY/chbox:$COMMIT_HASH
         podman push $IMAGE_NAME
         podman push $QUAY_URL/$QUAY_REPOSITORY/chbox:$COMMIT_HASH
