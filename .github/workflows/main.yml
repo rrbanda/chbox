@@ -1,8 +1,9 @@
-name: Create bootc image for ChRIS 
+name: Create bootc Image for ChRIS
+
 on:
   push:
-    branches:
-      - main
+    paths:
+      - 'Containerfile'
     tags:
       - '*'
 
