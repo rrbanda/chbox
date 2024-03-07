@@ -1,0 +1,35 @@
+name: Build and Push Podman Image
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Podman
+      uses: projectatomic/buildah-action@v2
+
+    - name: Build and push Podman image
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        QUAY_URL: ${{ secrets.QUAY_URL }}
+        QUAY_REPOSITORY: ${{ secrets.QUAY_REPOSITORY }}
+      run: |
+        COMMIT_HASH=$(git rev-parse --short HEAD)
+        TAG=$(echo $GITHUB_REF | sed 's|.*/||')
+        IMAGE_NAME=$QUAY_URL/$QUAY_REPOSITORY/chbox:$TAG
+        buildah bud -t $IMAGE_NAME .
+        buildah login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD $QUAY_URL
+        buildah tag $IMAGE_NAME $QUAY_URL/$QUAY_REPOSITORY/chbox:$COMMIT_HASH
+        buildah push $IMAGE_NAME
+        buildah push $QUAY_URL/$QUAY_REPOSITORY/chbox:$COMMIT_HASH
