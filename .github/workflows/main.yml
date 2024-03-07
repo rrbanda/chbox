@@ -17,7 +17,8 @@ jobs:
 
     - name: Install Podman
       run: |
-        sudo dnf install -y podman
+        sudo apt update
+        sudo apt install -y podman
 
     - name: Build and push Podman image
       env:
