@@ -1,4 +1,4 @@
-name: Build and Push Podman Image
+name: Build and Push bootc Image for chris in a box
 
 on:
   push:
