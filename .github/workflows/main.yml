@@ -1,4 +1,4 @@
-name: Build and Push bootc Image for chris in a box
+name: Build and Push Podman Image
 
 on:
   push:
@@ -15,8 +15,9 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set up Podman
-      uses: projectatomic/buildah-action@v2
+    - name: Install Podman
+      run: |
+        sudo dnf install -y podman
 
     - name: Build and push Podman image
       env:
@@ -28,8 +29,8 @@ jobs:
         COMMIT_HASH=$(git rev-parse --short HEAD)
         TAG=$(echo $GITHUB_REF | sed 's|.*/||')
         IMAGE_NAME=$QUAY_URL/$QUAY_REPOSITORY/chbox:$TAG
-        buildah bud -t $IMAGE_NAME .
-        buildah login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD $QUAY_URL
-        buildah tag $IMAGE_NAME $QUAY_URL/$QUAY_REPOSITORY/chbox:$COMMIT_HASH
-        buildah push $IMAGE_NAME
-        buildah push $QUAY_URL/$QUAY_REPOSITORY/chbox:$COMMIT_HASH
+        podman build -t $IMAGE_NAME .
+        podman login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD $QUAY_URL
+        podman tag $IMAGE_NAME $QUAY_URL/$QUAY_REPOSITORY/chbox:$COMMIT_HASH
+        podman push $IMAGE_NAME
+        podman push $QUAY_URL/$QUAY_REPOSITORY/chbox:$COMMIT_HASH
