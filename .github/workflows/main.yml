@@ -2,8 +2,8 @@ name: Build and push bootc image for ChRIS
 
 on:
   push:
-    branches:
-      - main
+    paths:
+      - 'Containerfile'
     tags:
       - '*'
 
