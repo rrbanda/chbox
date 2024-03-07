@@ -15,7 +15,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
       
-    - name: Extract latest tag
+    - name: Extract latest repository tag
       id: extract_tag
       run: |
         latest_tag=$(git describe --abbrev=0 --tags)
