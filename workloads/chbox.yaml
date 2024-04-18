@@ -195,8 +195,8 @@ spec:
         - name: server
           image: ghcr.io/fnndsc/cube:5.0.0
           ports:
-          - containerPort: 9000
-            hostPort: 9000
+          - containerPort: 8000
+            hostPort: 8000
           envFrom:
             - configMapRef:
                 name: minichris-cube-config
