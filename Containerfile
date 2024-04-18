@@ -1,5 +1,5 @@
 # Specifies the base image that this container will be built upon.
-FROM registry.redhat.io/rhel9-beta/rhel-bootc:9.4
+FROM quay.io/centos-bootc/centos-bootc-dev:stream9
 
 # Copies a file named chbox.kube from the host into the container, 
 # specifically into the path /etc/containers/systemd/chbox.kube.
