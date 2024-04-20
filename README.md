@@ -2,6 +2,8 @@
 
 
 ## Status
+
+### Get host info
 ```
  hostnamectl
    Static hostname: (unset)                         
@@ -18,8 +20,12 @@ Transient hostname: dhcp-10-26-67-18
     Hardware Model: HX500
   Firmware Version: Z01-0002A034
 
+```
+### Get  containers info
 
+```
 podman ps -a
+
 CONTAINER ID  IMAGE                                          COMMAND               CREATED        STATUS                  PORTS                   NAMES
 96c799b72e72  localhost/podman-pause:4.9.4-dev-1710930166                          6 minutes ago  Up 6 minutes                                    1bf5e4561f80-service
 c453a4dac0f2  localhost/podman-pause:4.9.4-dev-1710930166                          6 minutes ago  Up 6 minutes                                    229308b4cf91-infra
