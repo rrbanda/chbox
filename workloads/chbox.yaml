@@ -195,8 +195,8 @@ spec:
         - name: server
           image: ghcr.io/fnndsc/cube:5.0.0
           ports:
-          - containerPort: 3000
-            hostPort: 8020
+          - containerPort: 8000
+            hostPort: 8000
           envFrom:
             - configMapRef:
                 name: minichris-cube-config
@@ -288,7 +288,7 @@ spec:
             hostPort: 8020
           env:
             - name: REACT_APP_CHRIS_UI_URL
-              value: http://localhost:8000/api/v1/
+              value: http://10.26.67.18:8000/api/v1/
             - name: REACT_APP_PFDCM_URL
               value: http://localhost:4005/
 ---
