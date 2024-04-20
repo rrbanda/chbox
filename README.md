@@ -1,7 +1,61 @@
 # Chris using Image based Linux Operating System
 
 
-## Status
+## Information
+
+### Status
+```
+ bootc status
+
+apiVersion: org.containers.bootc/v1alpha1
+kind: BootcHost
+metadata:
+  name: host
+spec:
+  image:
+    image: quay.io/rbrhssa/chbox:1.5
+    transport: registry
+  bootOrder: default
+status:
+  staged: null
+  booted:
+    image:
+      image:
+        image: quay.io/rbrhssa/chbox:1.5
+        transport: registry
+      version: stream9.20240411.0
+      timestamp: null
+      imageDigest: sha256:f136a78a314067d56a80fed35341072cb8b8ab124437627701274b1149e72762
+    cachedUpdate: null
+    incompatible: false
+    pinned: false
+    ostree:
+      checksum: 7597d123bb7ca67a0000da5689c80ab5a14aa9eb4540c9fca6734b19e479ed61
+      deploySerial: 0
+  rollback:
+    image:
+      image:
+        image: quay.io/rbrhssa/chbox:1.5
+        transport: registry
+      version: stream9.20240411.0
+      timestamp: null
+      imageDigest: sha256:88aa2ff479e3b93b522e1aee9d246ac1d83511b180e3ebc9253b168fc2bb01cb
+    cachedUpdate:
+      image:
+        image: quay.io/rbrhssa/chbox:1.5
+        transport: registry
+      version: stream9.20240411.0
+      timestamp: null
+      imageDigest: sha256:f136a78a314067d56a80fed35341072cb8b8ab124437627701274b1149e72762
+    incompatible: false
+    pinned: false
+    ostree:
+      checksum: dc8e3a7e6d4a3c6d94aed5a9eae7e0e03aa0e1caece2835d1b8ce48ea5756bcf
+      deploySerial: 0
+  rollbackQueued: false
+  type: bootcHost
+  
+```
 
 ### Get host info
 ```
