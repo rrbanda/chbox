@@ -3,6 +3,11 @@
 
 ## Information
 
+## Create bootc image for chris
+
+<img width="1512" alt="Screenshot 2024-04-22 at 6 19 13 PM" src="https://github.com/veniceofcode/chbox/assets/93591339/057e216f-8226-4f8e-9f52-2d3ec378d9fb">
+
+
 ## Build bootc image using Podman Desktop
 
 <img width="1510" alt="Screenshot 2024-04-22 at 6 16 49 PM" src="https://github.com/veniceofcode/chbox/assets/93591339/c93dd001-b1d4-46fd-983c-6877edd1a404">
