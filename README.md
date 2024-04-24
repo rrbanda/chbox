@@ -23,8 +23,37 @@
 ` 
 sudo podman run --rm --privileged --pid=host -v /:/target -v /var/lib/containers:/var/lib/containers --security-opt label=type:unconfined_t quay.io/rbrhssa/chbox:1.5 bootc install to-filesystem --karg=console=ttyS0,115200n8 --replace=alongside /target 
 `
+## Output
 
+` 
+Trying to pull quay.io/rbrhssa/chbox:1.5...
+Getting image source signatures
+Copying blob 86ff997c30cd done  
+Copying blob c3f4f8980e29 done  
+Copying blob cb70cdc95b0d done  
+Copying blob 930c4135dd1c done  
+Copying blob 86ff997c30cd done  
+Copying blob c3f4f8980e29 done  
+Copying blob cb70cdc95b0d done  
+Copying blob 86ff997c30cd done  
+Copying blob c3f4f8980e29 done  
+Copying blob 1312c953f350 done  
+Copying blob 5163072832fc done  
+Copying config 5c8ae7dc5a done  
+Writing manifest to image destination
+Storing signatures
+Installing image: docker://quay.io/rbrhssa/chbox:1.5
+Digest: sha256:f136a78a314067d56a80fed35341072cb8b8ab124437627701274b1149e72762
+Initializing ostree layout
+Initializing sysroot
+ostree/deploy/default initialized as OSTree stateroot
+Deploying container image
+Deployment complete
+Running bootupctl to install bootloader
+Installed: grub.cfg
+Installation complete!
 
+` 
 
 
 ### Check Status of a bootc system that is running ChRIS
