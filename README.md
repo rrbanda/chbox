@@ -25,7 +25,7 @@ sudo podman run --rm --privileged --pid=host -v /:/target -v /var/lib/containers
 `
 ## Output
 
-` 
+`
 Trying to pull quay.io/rbrhssa/chbox:1.5...
 Getting image source signatures
 Copying blob 86ff997c30cd done  
@@ -52,7 +52,6 @@ Deployment complete
 Running bootupctl to install bootloader
 Installed: grub.cfg
 Installation complete!
-
 ` 
 
 
