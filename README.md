@@ -2,7 +2,7 @@
 
 ### Using Podman
 
-### Containerfile to build a bootc image embedded with ChRIS application quadlets
+#### Containerfile to build a bootc image embedded with ChRIS application quadlets
 
 ```
 # Specifies the base image that this container will be built upon.
@@ -47,13 +47,13 @@ RUN systemctl enable podman.socket
 
 ```
 
-### Build a bootc image for ChRIS using bootc 
+#### Build a bootc image for ChRIS using bootc 
 
 `
 podman build -t quay.io/rbrhssa/chbox:1.5 .
 `
 
-### Push the image to  quay.io repository 
+#### Push the image to  quay.io repository 
 
 `
 podman push quay.io/rbrhssa/chbox:1.5
@@ -67,17 +67,17 @@ podman push quay.io/rbrhssa/chbox:1.5
 
 
 
-### Build bootc image using Podman Desktop for ChRIS 
+#### Build bootc disk image file using Podman Desktop for ChRIS 
 
 <img width="1510" alt="Screenshot 2024-04-22 at 6 16 49 PM" src="https://github.com/veniceofcode/chbox/assets/93591339/c93dd001-b1d4-46fd-983c-6877edd1a404">
 
 
-### Run bootc on an existing RHEL 9.X machine 
+#### Run bootc on an existing RHEL 9.X machine 
 
 ` 
 sudo podman run --rm --privileged --pid=host -v /:/target -v /var/lib/containers:/var/lib/containers --security-opt label=type:unconfined_t quay.io/rbrhssa/chbox:1.5 bootc install to-filesystem --karg=console=ttyS0,115200n8 --replace=alongside /target 
 `
-### Output
+#### Output
 
 ```
 Trying to pull quay.io/rbrhssa/chbox:1.5...
@@ -109,13 +109,13 @@ Installation complete!
 
 ```
 
-### Perform reboot to access the bootc machine
+#### Perform reboot to access the bootc machine
 
 `
 [root@dhcp-10-26-67-18]# systemctl reboot 
 `
 
-### Access the machine once reboot is completed
+#### Access the machine once reboot is completed
 
 `
  ➜  ~ ssh root@3.133.184.191   
@@ -136,7 +136,7 @@ Warning: Permanently added '3.133.184.191' (ED25519) to the list of known hosts.
 [root@ip-192-168-0-74 ~]#  
 `
 
-### Check Status of a bootc system that is running ChRIS
+#### Check Status of a bootc system that is running ChRIS
 
 
  `
@@ -194,7 +194,7 @@ status:
   
 ```
 
-### Get host info
+#### Get host info
 `
 hostnamectl
 `
@@ -215,7 +215,7 @@ Transient hostname: dhcp-10-26-67-18
   Firmware Version: Z01-0002A034
 
 ```
-### Get  ChRIS containers info that are running on image based Linux
+#### Get  ChRIS containers info that are running on image based Linux
 
 `
 podman ps -a
