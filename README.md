@@ -1,4 +1,4 @@
-# ChRIS using Image based Linux Operating System
+## ChRIS using Image based Linux Operating System
 
 ### Containerfile to build a bootc image embedded with ChRIS application quadlets
 
