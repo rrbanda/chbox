@@ -61,13 +61,9 @@ podman push quay.io/rbrhssa/chbox:1.5
 
 ### Using Podman Desktop
 
-#### Create bootc image for ChRIS using Podman Desktop
+#### Create bootc disk image for ChRIS using Podman Desktop
 
 <img width="1512" alt="Screenshot 2024-04-22 at 6 20 05 PM" src="https://github.com/veniceofcode/chbox/assets/93591339/4b7699aa-0b9c-49b3-9424-10f385343d92">
-
-
-
-#### Build bootc disk image file using Podman Desktop for ChRIS 
 
 <img width="1510" alt="Screenshot 2024-04-22 at 6 16 49 PM" src="https://github.com/veniceofcode/chbox/assets/93591339/c93dd001-b1d4-46fd-983c-6877edd1a404">
 
