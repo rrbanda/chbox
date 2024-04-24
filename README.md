@@ -55,6 +55,11 @@ Installation complete!
 
 ```
 
+## Perform reboot to access the bootc machine
+
+`
+[root@rhel9 student]# systemctl reboot 
+`
 
 ### Check Status of a bootc system that is running ChRIS
 ```
