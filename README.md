@@ -1,29 +1,29 @@
 # ChRIS using Image based Linux Operating System
 
-## Containerfile to build a bootc image embedded with ChRIS application quadlets
+### Containerfile to build a bootc image embedded with ChRIS application quadlets
 
 
 <img width="1494" alt="Screenshot 2024-04-23 at 9 02 31 PM" src="https://github.com/veniceofcode/chbox/assets/93591339/524d9377-7d84-4d78-b483-ea724478fd2d">
 
 
 
-## Create bootc image for ChRIS
+### Create bootc image for ChRIS
 
 <img width="1512" alt="Screenshot 2024-04-22 at 6 20 05 PM" src="https://github.com/veniceofcode/chbox/assets/93591339/4b7699aa-0b9c-49b3-9424-10f385343d92">
 
 
 
-## Build bootc image using Podman Desktop for ChRIS 
+### Build bootc image using Podman Desktop for ChRIS 
 
 <img width="1510" alt="Screenshot 2024-04-22 at 6 16 49 PM" src="https://github.com/veniceofcode/chbox/assets/93591339/c93dd001-b1d4-46fd-983c-6877edd1a404">
 
 
-## Run bootc on an existing RHEL 9.X machine 
+### Run bootc on an existing RHEL 9.X machine 
 
 ` 
 sudo podman run --rm --privileged --pid=host -v /:/target -v /var/lib/containers:/var/lib/containers --security-opt label=type:unconfined_t quay.io/rbrhssa/chbox:1.5 bootc install to-filesystem --karg=console=ttyS0,115200n8 --replace=alongside /target 
 `
-## Output
+### Output
 
 ```
 Trying to pull quay.io/rbrhssa/chbox:1.5...
@@ -55,13 +55,13 @@ Installation complete!
 
 ```
 
-## Perform reboot to access the bootc machine
+### Perform reboot to access the bootc machine
 
 `
 [root@rhel9 student]# systemctl reboot 
 `
 
-## Access the machine once reboot is completed
+### Access the machine once reboot is completed
 
 `
  ➜  ~ ssh root@3.133.184.191   
@@ -82,7 +82,7 @@ Warning: Permanently added '3.133.184.191' (ED25519) to the list of known hosts.
 [root@ip-192-168-0-74 ~]#  
 `
 
-## Check Status of a bootc system that is running ChRIS
+### Check Status of a bootc system that is running ChRIS
 
 
  `
