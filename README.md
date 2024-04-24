@@ -2,7 +2,7 @@
 
 ### Using Podman
 
-#### Containerfile to build a bootc image embedded with ChRIS application quadlets
+#### Review and update Containerfile to build a bootc image embedded with ChRIS application quadlets
 
 ```
 # Specifies the base image that this container will be built upon.
