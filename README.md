@@ -25,7 +25,9 @@ sudo podman run --rm --privileged --pid=host -v /:/target -v /var/lib/containers
 `
 
 
-### Status
+
+
+### Check Status of a bootc system that is running ChRIS
 ```
  bootc status
 
@@ -97,7 +99,7 @@ Transient hostname: dhcp-10-26-67-18
   Firmware Version: Z01-0002A034
 
 ```
-### Get  containers info
+### Get  ChRIS containers info that are running on image based Linux
 
 ```
 podman ps -a
