@@ -1,5 +1,12 @@
 # Chris using Image based Linux Operating System
 
+## Containerfile to build a bootc image embedded with ChRIS application quadlets
+
+
+<img width="1494" alt="Screenshot 2024-04-23 at 9 02 31 PM" src="https://github.com/veniceofcode/chbox/assets/93591339/524d9377-7d84-4d78-b483-ea724478fd2d">
+
+
+
 ## Create bootc image for chris
 
 <img width="1512" alt="Screenshot 2024-04-22 at 6 20 05 PM" src="https://github.com/veniceofcode/chbox/assets/93591339/4b7699aa-0b9c-49b3-9424-10f385343d92">
