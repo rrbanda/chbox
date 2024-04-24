@@ -64,13 +64,22 @@ Installation complete!
 ## Access the machine once reboot is completed
 
 `
-➜  ~ ssh root@3.133.184.191   
+ ➜  ~ ssh root@3.133.184.191   
+`
+
+`
 The authenticity of host '3.133.184.191 (3.133.184.191)' can't be established.
 ED25519 key fingerprint is SHA256:bKQlNXzRNC/S/SBmTGq9Aqz7Sp01AQVLYf/jp9iID1U.
 This key is not known by any other names.
+`
+
+`
 Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
 Warning: Permanently added '3.133.184.191' (ED25519) to the list of known hosts.
-[root@ip-192-168-0-74 ~]# 
+`
+
+`
+[root@ip-192-168-0-74 ~]#  
 `
 
 ## Check Status of a bootc system that is running ChRIS
