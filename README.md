@@ -6,6 +6,16 @@
 <img width="1494" alt="Screenshot 2024-04-23 at 9 02 31 PM" src="https://github.com/veniceofcode/chbox/assets/93591339/524d9377-7d84-4d78-b483-ea724478fd2d">
 
 
+### Build a bootc image for ChRIS using bootc 
+
+`
+podman build -t quay.io/rbrhssa/chbox:1.5 .
+`
+### Push the image to  quay.io repository 
+
+`
+podman push quay.io/rbrhssa/chbox:1.5
+`
 
 ### Create bootc image for ChRIS using Podman Desktop
 
