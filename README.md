@@ -83,9 +83,13 @@ Warning: Permanently added '3.133.184.191' (ED25519) to the list of known hosts.
 `
 
 ## Check Status of a bootc system that is running ChRIS
-```
- bootc status
 
+
+ `
+ bootc status
+ `
+ 
+```
 apiVersion: org.containers.bootc/v1alpha1
 kind: BootcHost
 metadata:
@@ -137,8 +141,11 @@ status:
 ```
 
 ### Get host info
-```
- hostnamectl
+`
+hostnamectl
+`
+
+``` 
    Static hostname: (unset)                         
 Transient hostname: dhcp-10-26-67-18
          Icon name: computer-desktop
@@ -156,9 +163,11 @@ Transient hostname: dhcp-10-26-67-18
 ```
 ### Get  ChRIS containers info that are running on image based Linux
 
-```
+`
 podman ps -a
+`
 
+```
 CONTAINER ID  IMAGE                                          COMMAND               CREATED        STATUS                  PORTS                   NAMES
 96c799b72e72  localhost/podman-pause:4.9.4-dev-1710930166                          6 minutes ago  Up 6 minutes                                    1bf5e4561f80-service
 c453a4dac0f2  localhost/podman-pause:4.9.4-dev-1710930166                          6 minutes ago  Up 6 minutes                                    229308b4cf91-infra
