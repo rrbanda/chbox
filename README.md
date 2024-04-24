@@ -108,7 +108,7 @@ Installation complete!
 ### Perform reboot to access the bootc machine
 
 `
-[root@rhel9 student]# systemctl reboot 
+[root@dhcp-10-26-67-18]# systemctl reboot 
 `
 
 ### Access the machine once reboot is completed
