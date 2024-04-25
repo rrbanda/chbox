@@ -1,14 +1,6 @@
 ## ChRIS using Image based Linux Operating System
 
-### Using Podman Desktop
-
-
-
-https://github.com/veniceofcode/chbox/assets/93591339/948af1e3-5133-48bf-b421-afc0ec503497
-
-
-
-### Podman 
+### Containerfile 
 
 #### Review and update Containerfile to build a bootc image embedded with ChRIS application quadlets
 
@@ -54,6 +46,12 @@ CMD ["systemctl", "start", "podman.socket"]
 RUN systemctl enable podman.socket
 
 ```
+
+### Using Podman Desktop
+
+
+https://github.com/veniceofcode/chbox/assets/93591339/948af1e3-5133-48bf-b421-afc0ec503497
+
 
 #### Build a bootc image for ChRIS using bootc 
 
