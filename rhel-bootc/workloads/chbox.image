@@ -1,0 +1,8 @@
+[Install]
+WantedBy=chbox.service
+
+[Image]
+Image=ghcr.io/fnndsc/cube:5.0.0
+Image=ghcr.io/fnndsc/chris_ui:20231003.270-01f1a863
+Image=ghcr.io/fnndsc/pfcon:5.2.2
+Image=ghcr.io/fnndsc/pman:6.0.1

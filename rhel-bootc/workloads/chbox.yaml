@@ -1,0 +1,382 @@
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: minichris-cube-config
+  labels:
+    app.kubernetes.io/part-of: miniChRIS
+  annotations:
+    kubernetes.io/description: "Configuration of ChRIS backend production mode, security options, and secrets"
+data:
+  DJANGO_SETTINGS_MODULE: "config.settings.production"
+  CUBE_CELERY_POLL_INTERVAL: "5.0"
+  DJANGO_ALLOWED_HOSTS: "*"
+  DJANGO_SECRET_KEY: "secret"
+  DJANGO_CORS_ALLOW_ALL_ORIGINS: "true"
+  DJANGO_CORS_ALLOWED_ORIGINS: ""
+  DJANGO_SECURE_PROXY_SSL_HEADER: ""
+  DJANGO_USE_X_FORWARDED_HOST: "false"
+  AUTH_LDAP: "false"
+  CHRIS_STORE_URL: "https://chrisstore.co/api/v1/"
+  DATABASE_HOST: "minichris-postgres-pod"
+  DATABASE_PORT: "5432"
+  CELERY_BROKER_URL: "amqp://minichris-rabbitmq-pod:5672"
+  STORAGE_ENV: "filesystem"
+  MEDIA_ROOT: "/data"
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: minichris-db-config
+  labels:
+    app.kubernetes.io/part-of: miniChRIS
+  annotations:
+    kubernetes.io/description: "Configuration of a PostgresSQL databse used by the ChRIS backend"
+data:
+  POSTGRES_DB: "chris"
+  POSTGRES_USER: "chris"
+  POSTGRES_PASSWORD: "chris1234"
+---
+
+apiVersion: apps/v1
+
+kind: Deployment
+metadata:
+  name: minichris-postgres
+  labels:
+    app.kubernetes.io/name: minichris-db
+    app.kubernetes.io/component: database
+    app.kubernetes.io/part-of: miniChRIS
+  annotations:
+    kubernetes.io/description: "Database for ChRIS"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: minichris-db
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: minichris-db
+    spec:
+      containers:
+        - name: postgres
+          image: docker.io/library/postgres:16
+          envFrom:
+            - configMapRef:
+                name: minichris-db-config
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: minichris-db-data
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: minichris-db-data
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 128Mi
+---
+apiVersion: apps/v1
+
+kind: Deployment
+metadata:
+  name: minichris-rabbitmq
+  labels:
+    app.kubernetes.io/name: minichris-rabbitmq
+    app.kubernetes.io/component: queue
+    app.kubernetes.io/part-of: miniChRIS
+  annotations:
+    kubernetes.io/description: "ChRIS backend asynchronous task queue"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: minichris-rabbitmq
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: minichris-rabbitmq
+    spec:
+      containers:
+        - name: rabbitmq
+          image: docker.io/library/rabbitmq:3
+          ports:
+            - name: amqp
+              containerPort: 5672
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/rabbitmq
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: minichris-rabbitmq-data
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: minichris-rabbitmq-data
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 128Mi
+---
+# Deployment configuration for ChRIS_ultron_backEnd (CUBE).
+#
+# CUBE consists of:
+#
+# - a server which handles HTTP requests
+# - several Celery workers
+#
+# This file is convenient for running a single replica of CUBE on Podman.
+# In large production use cases, the above components should be defined
+# in multiple separate Deployments because they can scale independently of one another.
+
+apiVersion: apps/v1
+
+kind: Deployment
+metadata:
+  name: minichris-cube
+  labels:
+    app.kubernetes.io/name: minichris-cube
+    app.kubernetes.io/component: backend
+    app.kubernetes.io/part-of: miniChRIS
+  annotations:
+    kubernetes.io/description: "ChRIS_ultron_backEnd in a single replica of a single pod."
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: minichris-cube
+  template:
+    metadata:
+      name: minichris-cube
+      labels:
+        app.kubernetes.io/name: minichris-cube
+        app.kubernetes.io/component: backend
+        app.kubernetes.io/part-of: miniChRIS
+        org.chrisproject.role: "ChRIS_ultron_backEnd"  # selector used by chrisomatic
+      annotations:
+        kubernetes.io/description: "ChRIS_ultron_backEnd in a single replica of a single pod."
+    spec:
+      initContainers:
+        - name: db-ready
+          image: docker.io/library/postgres:16
+          command:
+            - /bin/sh
+            - -c
+            - until pg_isready -U chris -h minichris-postgres-pod -p 5432; do sleep 1; done
+        - name: migratedb
+          image: ghcr.io/fnndsc/cube:5.0.0
+          command: ["python", "manage.py", "migrate", "--noinput"]
+          envFrom:
+            - configMapRef:
+                name: minichris-cube-config
+            - configMapRef:
+                name: minichris-db-config
+          volumeMounts:
+            - mountPath: /data
+              name: file-storage
+      containers:
+        - name: server
+          image: ghcr.io/fnndsc/cube:5.0.0
+          ports:
+          - containerPort: 8000
+            hostPort: 8000
+          envFrom:
+            - configMapRef:
+                name: minichris-cube-config
+            - configMapRef:
+                name: minichris-db-config
+          volumeMounts:
+            - mountPath: /data
+              name: file-storage
+
+        - name: cube-worker
+          image: ghcr.io/fnndsc/cube:5.0.0
+          command: ["celery", "-A", "core", "worker", "-c", "4", "-l", "info", "-Q", "main1,main2"]
+          envFrom:
+            - configMapRef:
+                name: minichris-cube-config
+            - configMapRef:
+                name: minichris-db-config
+          volumeMounts:
+            - mountPath: /data
+              name: file-storage
+
+        - name: cube-worker-periodic
+          image: ghcr.io/fnndsc/cube:5.0.0
+          command: ["celery", "-A", "core", "worker", "-c", "2", "-l", "info", "-Q", "periodic"]
+          envFrom:
+            - configMapRef:
+                name: minichris-cube-config
+            - configMapRef:
+                name: minichris-db-config
+          volumeMounts:
+            - mountPath: /data
+              name: file-storage
+
+        - name: cube-celery-beat
+          image: ghcr.io/fnndsc/cube:5.0.0
+          command: ["celery", "-A", "core", "beat", "-l", "info", "--scheduler", "django_celery_beat.schedulers:DatabaseScheduler"]
+          envFrom:
+            - configMapRef:
+                name: minichris-cube-config
+            - configMapRef:
+                name: minichris-db-config
+          volumeMounts:
+            - mountPath: /data
+              name: file-storage
+
+      volumes:
+        - name: file-storage
+          persistentVolumeClaim:
+            claimName: minichris-cube-files
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: minichris-cube-files
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+---
+# Chris UI using Podman
+
+apiVersion: apps/v1
+
+kind: Deployment
+metadata:
+  name: minichris-chrisui
+  labels:
+    app.kubernetes.io/name: minichris-ui
+    app.kubernetes.io/component: frontend
+    app.kubernetes.io/part-of: miniChRIS
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: minichris-ui
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: minichris-ui
+    spec:
+      containers:
+        - name: chrisui
+          image: ghcr.io/fnndsc/chris_ui:20231003.270-01f1a863
+          args: ["sirv", "--host", "--single"]
+          ports:
+          - containerPort: 3000
+            hostPort: 8020
+          env:
+            - name: REACT_APP_CHRIS_UI_URL
+              value: http://10.26.67.18:8000/api/v1/
+            - name: REACT_APP_PFDCM_URL
+              value: http://localhost:4005/
+---
+# pfcon+pman pair using Podman
+
+apiVersion: apps/v1
+
+kind: Deployment
+metadata:
+  name: minichris-pfcon
+  labels:
+    app.kubernetes.io/name: minichris-pfcon
+    app.kubernetes.io/component: computeresource
+    app.kubernetes.io/part-of: miniChRIS
+  annotations:
+    kubernetes.io/description: "pfcon+pman services connecting CUBE to Podman"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: minichris-pfcon
+  template:
+    metadata:
+      name: minichris-pfcon
+      labels:
+        app.kubernetes.io/name: minichris-pfcon
+    spec:
+      containers:
+        - name: pfcon
+          image: ghcr.io/fnndsc/pfcon:5.2.2
+          ports:
+            - name: pfcon
+              containerPort: 5005
+          env:
+            - name: COMPUTE_SERVICE_URL
+              value: http://localhost:5010/api/v1/
+            - name: SECRET_KEY
+              value: secret
+            - name: PFCON_USER
+              value: pfcon
+            - name: PFCON_PASSWORD
+              value: pfcon1234
+            - name: PFCON_INNETWORK
+              value: "true"
+            - name: STORAGE_ENV
+              value: filesystem
+            - name: STOREBASE_MOUNT
+              value: /var/local/storeBase
+          volumeMounts:
+            - mountPath: /var/local/storeBase
+              name: cube-files
+
+        - name: pman
+          image: ghcr.io/fnndsc/pman:6.0.1
+          ports:
+            - name: pman
+              containerPort: 5010
+          env:
+            - name: CONTAINER_ENV
+              value: docker
+            - name: STORAGE_TYPE
+              value: docker_local_volume
+            - name: VOLUME_NAME
+              value: minichris-cube-files
+            - name: STOREBASE
+            - name: SECRET_KEY
+              value: secret
+            - name: REMOVE_JOBS
+              value: "yes"
+          volumeMounts:
+            - mountPath: /var/run/docker.sock
+              name: podman-socket
+
+      # Let SELinux allow us to access the Podman socket
+      # https://unix.stackexchange.com/a/595152
+      securityContext:
+        seLinuxOptions:
+          type: spc_t
+
+      volumes:
+        - name: cube-files
+          persistentVolumeClaim:
+            claimName: minichris-cube-files
+        - name: podman-socket
+          hostPath:
+            # pman needs to run containers, and it does so by communicating with the Podman socket.
+            # This means that the Podman system service must be running, and the socket's path
+            # must be known.
+            # The hard-coded path below is replaced with the user-specific value by minichris.sh
+            path: /run/podman/podman.sock
+            type: Socket
