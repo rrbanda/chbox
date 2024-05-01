@@ -2,6 +2,9 @@
 # It's pulling from the image quay.io/centos-bootc/fedora-bootc:eln with the tag eln.
 FROM registry.redhat.io/rhel9/rhel-bootc:9.4
 
+# Runs two commands inside the container. First, it installs the vim package using dnf (the package manager for Fedora-based systems), then it cleans up any cached package data.
+RUN dnf install -y vim && dnf clean all
+
 # Copies a file named chbox.kube from the host into the container, 
 # specifically into the path /etc/containers/systemd/chbox.kube.
 COPY workloads/chbox.kube /etc/containers/systemd/chbox.kube
