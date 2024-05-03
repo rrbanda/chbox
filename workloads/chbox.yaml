@@ -281,7 +281,7 @@ spec:
     spec:
       containers:
         - name: chrisui
-          image: fnndsc/chris_ui:latest
+          image: ghcr.io/fnndsc/cube:latest
           args: ["sirv", "--host", "--single"]
           ports:
           - containerPort: 3000
