@@ -2,7 +2,7 @@
 WantedBy=chbox.service
 
 [Image]
-Image=fnndsc/cube:latest
-Image=fnndsc/chris_ui:latest
+Image=ghcr.io/fnndsc/cube:latest
+Image=ghcr.io/fnndsc/chris_ui:20240503.446-df98717c-staging
 Image=ghcr.io/fnndsc/pfcon:5.2.2
 Image=ghcr.io/fnndsc/pman:6.0.1
