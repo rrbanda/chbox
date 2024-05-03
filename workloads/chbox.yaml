@@ -181,7 +181,7 @@ spec:
             - -c
             - until pg_isready -U chris -h minichris-postgres-pod -p 5432; do sleep 1; done
         - name: migratedb
-          image: fnndsc/cube:latest
+          image: ghcr.io/fnndsc/cube:latest
           command: ["python", "manage.py", "migrate", "--noinput"]
           envFrom:
             - configMapRef:
@@ -193,7 +193,7 @@ spec:
               name: file-storage
       containers:
         - name: server
-          image: fnndsc/cube:latest
+          image: ghcr.io/fnndsc/cube:latest
           ports:
           - containerPort: 8000
             hostPort: 8000
@@ -207,7 +207,7 @@ spec:
               name: file-storage
 
         - name: cube-worker
-          image: fnndsc/cube:latest
+          image: ghcr.io/fnndsc/cube:latest
           command: ["celery", "-A", "core", "worker", "-c", "4", "-l", "info", "-Q", "main1,main2"]
           envFrom:
             - configMapRef:
@@ -231,7 +231,7 @@ spec:
               name: file-storage
 
         - name: cube-celery-beat
-          image: fnndsc/cube:latest
+          image: ghcr.io/fnndsc/cube:latest
           command: ["celery", "-A", "core", "beat", "-l", "info", "--scheduler", "django_celery_beat.schedulers:DatabaseScheduler"]
           envFrom:
             - configMapRef:
@@ -281,7 +281,7 @@ spec:
     spec:
       containers:
         - name: chrisui
-          image: ghcr.io/fnndsc/cube:latest
+          image: ghcr.io/fnndsc/chris_ui:20240503.446-df98717c-staging
           args: ["sirv", "--host", "--single"]
           ports:
           - containerPort: 3000
