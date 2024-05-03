@@ -1,4 +1,4 @@
-# Specifies the base image that this container will be built upon.
+# Specifies the bootc image that this container will be built upon.
 # It's pulling from the image quay.io/centos-bootc/fedora-bootc:eln with the tag eln.
 FROM quay.io/centos-bootc/centos-bootc-dev:stream9
 
