@@ -181,7 +181,7 @@ spec:
             - -c
             - until pg_isready -U chris -h minichris-postgres-pod -p 5432; do sleep 1; done
         - name: migratedb
-          image: ghcr.io/fnndsc/cube:latest
+          image: ghcr.io/fnndsc/cube:5.0.0
           command: ["python", "manage.py", "migrate", "--noinput"]
           envFrom:
             - configMapRef:
@@ -195,8 +195,8 @@ spec:
         - name: server
           image: ghcr.io/fnndsc/cube:5.0.0
           ports:
-          - containerPort: 8000
-            hostPort: 8000
+            - name: http
+              containerPort: 8000
           envFrom:
             - configMapRef:
                 name: minichris-cube-config
@@ -281,14 +281,14 @@ spec:
     spec:
       containers:
         - name: chrisui
-          image: ghcr.io/fnndsc/chris_ui:20231003.270-01f1a863
+          image: quay.io/rbrhssa/chris_ui:m1
           args: ["sirv", "--host", "--single"]
           ports:
           - containerPort: 3000
             hostPort: 8020
           env:
             - name: REACT_APP_CHRIS_UI_URL
-              value: http://10.26.67.18:8000/api/v1/
+              value: http://localhost:8000/api/v1/
             - name: REACT_APP_PFDCM_URL
               value: http://localhost:4005/
 ---
@@ -342,7 +342,7 @@ spec:
               name: cube-files
 
         - name: pman
-          image: ghcr.io/fnndsc/pman:6.0.1
+          image: ghcr.io/fnndsc/pman:6.1.0
           ports:
             - name: pman
               containerPort: 5010
@@ -380,3 +380,27 @@ spec:
             # The hard-coded path below is replaced with the user-specific value by minichris.sh
             path: /run/podman/podman.sock
             type: Socket
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: "2024-05-09T05:29:01Z"
+  labels:
+    app: model-server-pod
+  name: model-server-pod
+spec:
+  containers:
+    - env:
+        - name: TERM
+          value: xterm
+      image: quay.io/rbrhssa/pfms-ocp:latest
+      name: model-server
+      ports:
+        - containerPort: 2024
+          hostPort: 2024
+        - containerPort: 80
+          hostPort: 9000
+      securityContext:
+        runAsNonRoot: true
+      stdin: true
+      tty: true
